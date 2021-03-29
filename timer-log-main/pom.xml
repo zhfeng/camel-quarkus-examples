@@ -28,7 +28,7 @@
     <description>Camel Quarkus Example :: Timer to Log Main</description>
 
     <properties>
-        <camel-quarkus.version>1.8.1</camel-quarkus.version>
+        <camel-quarkus.version>1.9.0-SNAPSHOT</camel-quarkus.version>
         <quarkus.version>1.13.0.Final</quarkus.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -228,7 +228,7 @@
                     </execution>
                 </executions>
             </plugin>
-        
+
             <plugin>
                 <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
