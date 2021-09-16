@@ -6,13 +6,12 @@
 TIP: Check the https://camel.apache.org/camel-quarkus/latest/first-steps.html[Camel Quarkus User guide] for prerequisites
 and other general information.
 
-
 == Prerequisites
 
 This quickstart assumes that you already have access to Red Hat OpenShift Streams for Apache Kafka[https://developers.redhat.com/products/red-hat-openshift-streams-for-apache-kafka/getting-started].
 
 == Provision a Kafka cluster with OpenShift Streams for Apache Kafka
-You can provision either using the UI or RHOAS cli, as decribed in following sections
+You can provision either using the UI or RHOAS cli, as described in following sections
 
 == Provision a Kafka cluster with Openshift Streams for Apache Kafka using UI
 1. Go to https://cloud.redhat.com/application-services[cloud.redhat.com], and log with your Red Hat account, or create one.
@@ -77,7 +76,6 @@ $ mvn clean compile quarkus:dev
 The above command compiles the project, starts the application and lets the Quarkus tooling watch for changes in your
 workspace. Any modifications in your project will automatically take effect in the running application.
 
-
 TIP: Please refer to the Development mode section of
 https://camel.apache.org/camel-quarkus/latest/first-steps.html#_development_mode[Camel Quarkus User guide] for more details.
 
@@ -103,18 +101,32 @@ Next pull a message from the queue :
 $ curl -X GET http://0.0.0.0:8080/example
 ----
 
-
 === Package and run the application
 
 Once you are done with developing you may want to package and run the application.
 
+==== JVM mode
+
 [source,shell]
 ----
 $ mvn clean package -DskipTests
-$ java -jar target/*-runner.jar
+$ java -jar target/quarkus-app/quarkus-run.jar
 ----
 
-==== Deploying to OpenShift
+==== Native mode
+
+IMPORTANT: Native mode requires having GraalVM and other tools installed. Please check the Prerequisites section
+of https://camel.apache.org/camel-quarkus/latest/first-steps.html#_prerequisites[Camel Quarkus User guide].
+
+To prepare a native executable using GraalVM, run the following command:
+
+[source,shell]
+----
+$ mvn clean package -DskipTests -Pnative
+$ ./target/*-runner
+----
+
+=== Deploying to OpenShift
 Create a new project named `camel-kafka-ns`.
 
 [source,shell]
@@ -124,9 +136,18 @@ $ oc new-project camel-kafka-ns
 
 To deploy the application to OpenShift run the following command.
 
+==== JVM mode
+
 [source,shell]
 ----
 $ mvn clean package -DskipTests -Dquarkus.kubernetes.deploy=true
+----
+
+==== Native mode
+
+[source,shell]
+----
+$ mvn clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Pnative
 ----
 
 [NOTE]
@@ -171,7 +192,3 @@ $ oc delete project camel-kafka-ns
 ----
 
 For more information about deploying Quarkus applications to OpenShift, refer to the https://access.redhat.com/documentation/en-us/red_hat_build_of_quarkus/1.11/html/deploying_your_quarkus_applications_to_openshift/ref-openshift-build-strategies-and-quarkus_quarkus-openshift[documentation].
-
-
-
-

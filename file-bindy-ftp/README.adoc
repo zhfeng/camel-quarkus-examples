@@ -76,19 +76,43 @@ Finally, the aggregated book collections are unmarshalled back to CSV format and
 
 Once you are done with developing you may want to package and run the application.
 
+==== JVM mode
+
 [source,shell]
 ----
 $ mvn clean package -DskipTests
-$ java -jar target/*-runner.jar
+$ java -jar target/quarkus-app/quarkus-run.jar
 ----
 
-==== Deploying to OpenShift
+==== Native mode
+
+IMPORTANT: Native mode requires having GraalVM and other tools installed. Please check the Prerequisites section
+of https://camel.apache.org/camel-quarkus/latest/first-steps.html#_prerequisites[Camel Quarkus User guide].
+
+To prepare a native executable using GraalVM, run the following command:
+
+[source,shell]
+----
+$ mvn clean package -DskipTests -Pnative
+$ ./target/*-runner
+----
+
+=== Deploying to OpenShift
 
 To deploy the application to OpenShift run the following command.
+
+==== JVM mode
 
 [source,shell]
 ----
 $ mvn clean package -DskipTests -Dquarkus.kubernetes.deploy=true
+----
+
+==== Native mode
+
+[source,shell]
+----
+$ mvn clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Pnative
 ----
 
 Check pods are running.
