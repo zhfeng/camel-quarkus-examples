@@ -38,37 +38,20 @@ In the Kafka Instances page of the web console, for the relevant Kafka instance 
 
 Copy the Bootstrap server and  the SASL/OAUTHBEARER Token endpoint URL, needed for the configuration.
 
-If you want to connect to your Kafka instance using SASL Plain, you'd need to uncomment the Kafka credentials with SASL Plain section in `src/main/resources/application.properties`.
+---
+If you want to connect to your Kafka instance using SASL Plain, you'd need to set system property `-Dquarkus.profile=sasl-plain` (so the correct `application-sasl-plain.properties` is used) and provide following properties:
 
-[source,shell]
-----
-camel.component.kafka.brokers=<YOUR_KAFKA_BROKERS_URL>
-camel.component.kafka.security-protocol=SASL_SSL
-camel.component.kafka.sasl-mechanism=PLAIN
-camel.component.kafka.sasl-jaas-config=org.apache.kafka.common.security.plain.PlainLoginModule required username="<YOUR_KAFKA_SASL_CLIENT_ID>" password="<YOUR_KAFKA_SASL_CLIENT_SECRET>";
-----
-- Change YOUR_KAFKA_SASL_CLIENT_ID by the Client ID
-- Change YOUR_KAFKA_SASL_CLIENT_SECRET by the Client Secret
-- Change YOUR_KAFKA_BROKERS_URL by the Bootstrap server
+- system property `kafka.brokers.url` (or env variable `KAFKA_BROKERS_URL`)
+- system property `kafka.sasl.client.id` (or env variable `KAFKA_SASL_CLIENT_ID`)
+- system property `kafka.sasl.client.secret` (or env variable `KAFKA_SASL_CLIENT_SECRET`)
 
+---
+If you want to connect to your Kafka instance using SASL Oauth Bearer, you'd need to set system property `-Dquarkus.profile=sasl-oauth` (so the correct `application-sasl-oauth.properties` is used) and provide following properties:
 
-If you want to connect to your Kafka instance using SASL Oauth Bearer, you'd need to uncomment the Kafka credentials with SASL Oauth Bearer section in `src/main/resources/application.properties`.
-
-[source,shell]
-----
-camel.component.kafka.brokers = <YOUR_KAFKA_BROKERS_URL>
-camel.component.kafka.security-protocol = SASL_SSL
-camel.component.kafka.sasl-mechanism = OAUTHBEARER
-camel.component.kafka.sasl-jaas-config = org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required \
-        oauth.client.id="<YOUR_KAFKA_SASL_CLIENT_ID>" \
-        oauth.client.secret="<YOUR_KAFKA_SASL_CLIENT_SECRET>" \
-        oauth.token.endpoint.uri="<YOUR_KAFKA_SASL_OAUTHBEARER_TOKEN_URL>" ;
-camel.component.kafka.additional-properties[sasl.login.callback.handler.class] = io.strimzi.kafka.oauth.client.JaasClientOauthLoginCallbackHandler
-----
-- Change YOUR_KAFKA_SASL_CLIENT_ID by the Client ID
-- Change YOUR_KAFKA_SASL_CLIENT_SECRET by the Client Secret
-- Change YOUR_KAFKA_BROKERS_URL by the Bootstrap server
-- Change YOUR_KAFKA_SASL_OAUTHBEARER_TOKEN_URL by the SASL/OAUTHBEARER Token endpoint URL
+- system property `kafka.brokers.url` (or env variable `KAFKA_BROKERS_URL`)
+- system property `kafka.sasl.client.id` (or env variable `KAFKA_SASL_CLIENT_ID`)
+- system property `kafka.sasl.client.secret` (or env variable `KAFKA_SASL_CLIENT_SECRET`)
+- system property `kafka.sasl.oauthbearer.token.url` (or env variable `KAFKA_SASL_OAUTHBEARER_TOKEN_URL`)
 
 == Start in Development mode
 
