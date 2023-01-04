@@ -165,6 +165,3 @@ Now restart the application, and wait about 10 seconds, then you can see the fol
 ----
 check the audit_log table, you should see the message "crash" in the table.
 
-== Feedback
-
-Please report bugs and propose improvements via https://github.com/apache/camel-quarkus/issues[GitHub issues of Camel Quarkus] project.
