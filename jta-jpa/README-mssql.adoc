@@ -1,0 +1,26 @@
+== Start MS SQL Server
+
+[source, shell]
+----
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Admin@1234" -p 1433:1433  mcr.microsoft.com/mssql/server:2019-latest
+----
+
+== Enable XA Support
+
+First you need to find the running container id by `docker ps | grep mssql`.
+
+[source, shell]
+----
+docker exec -it <container id> /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Admin@123
+----
+
+And exec the following
+
+[source, shell]
+----
+1> EXEC sp_sqljdbc_xa_install
+2> GO
+1> 
+----
+
+More information https://learn.microsoft.com/en-us/sql/connect/jdbc/understanding-xa-transactions
