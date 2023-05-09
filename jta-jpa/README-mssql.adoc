@@ -24,3 +24,40 @@ And exec the following
 ----
 
 More information https://learn.microsoft.com/en-us/sql/connect/jdbc/understanding-xa-transactions
+
+== Build jta-jpa examples
+
+[source, shell]
+----
+cd jta-jpa
+mvn clean package
+----
+
+== Start a application
+
+[source, shell]
+----
+java -jar target/quarkus-app/quarkus-run.jar
+----
+
+== Test Commit and Rollback
+
+[source, shell]
+----
+curl -X POST http://localhost:8080/api/messages/hello
+
+curl -X POST http://localhost:8080/api/messages/fail
+
+curl http://localhost:8080/api/messages
+----
+
+All of them should work
+
+== Test crash recovery
+
+[source, shell]
+----
+curl -X POST http://localhost:8080/api/messages/crash
+----
+
+You should see someting like `curl: (52) Empty reply from server`, and re-start the application `java -jar target/quarkus-app/quarkus-run.jar`. Now there is an issue to recovery MS SQL XAResource.
