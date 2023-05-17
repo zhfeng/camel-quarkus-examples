@@ -5,7 +5,7 @@
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Admin@1234" -p 1433:1433  mcr.microsoft.com/mssql/server:2019-latest
 ----
 
-== Enable XA Support
+== Enable XA Support and create audit_log table for testing
 
 First you need to find the running container id by `docker ps | grep mssql`.
 
@@ -19,8 +19,9 @@ And exec the following
 [source, shell]
 ----
 1> EXEC sp_sqljdbc_xa_install
-2> GO
-1> 
+2> CREATE TABLE audit_log ( id bigint NOT NULL IDENTITY(1,1) PRIMARY KEY, message varchar(255) DEFAULT NULL )
+3> GO
+1>
 ----
 
 More information https://learn.microsoft.com/en-us/sql/connect/jdbc/understanding-xa-transactions
@@ -60,4 +61,18 @@ All of them should work
 curl -X POST http://localhost:8080/api/messages/crash
 ----
 
-You should see someting like `curl: (52) Empty reply from server`, and re-start the application `java -jar target/quarkus-app/quarkus-run.jar`. Now there is an issue to recovery MS SQL XAResource.
+You should see someting like `curl: (52) Empty reply from server`, and re-start the application `java -jar target/quarkus-app/quarkus-run.jar`. And it will recovery the transaction to add `crash` recorder into the database.
+
+You can check with
+
+[source, shell]
+----
+curl http://localhost:8080/api/messages
+----
+
+You may get the result something like
+
+[source, shell]
+----
+[{message=hello}, {message=crash}]
+----
